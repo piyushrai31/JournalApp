@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +33,7 @@ public class UserController {
         String userName = authentication.getName();
         User userInDB = userService.findByUserName(userName);
         userInDB.setUserName(user.getUserName());
-        userInDB.setPassword((user.getPassword()));
+        userInDB.setPassword(UserService.passwordEncoder.encode(user.getPassword()));
         userService.saveUser(userInDB);
         return new ResponseEntity<>(HttpStatus.OK);
     }
