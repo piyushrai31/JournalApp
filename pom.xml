@@ -8,6 +8,9 @@
 		<version>3.3.5</version>
 		<relativePath/>
 	</parent>
+	<properties>
+		<java.version>21</java.version>
+	</properties>
 	<artifactId>journalApp</artifactId>
 	<dependencies>
 		<!-- Web -->

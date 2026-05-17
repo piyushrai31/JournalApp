@@ -14,7 +14,8 @@ import java.util.Map;
 public class AppCache {
 
     public enum keys{
-        WEATHER_API;
+        WEATHER_API,
+        QUOTES_API;
     }
 
     public Map<String,String> appCache;

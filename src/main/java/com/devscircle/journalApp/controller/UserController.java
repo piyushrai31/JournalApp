@@ -1,8 +1,10 @@
 package com.devscircle.journalApp.controller;
 
+import com.devscircle.journalApp.api.response.QuoteResponse;
 import com.devscircle.journalApp.api.response.WeatherResponse;
 import com.devscircle.journalApp.entity.User;
 import com.devscircle.journalApp.repository.UserRepository;
+import com.devscircle.journalApp.service.QuoteService;
 import com.devscircle.journalApp.service.UserService;
 import com.devscircle.journalApp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private QuoteService quoteService;
+
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,10 +54,16 @@ public class UserController {
     public ResponseEntity<?> greetings(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        WeatherResponse weatherResponse = weatherService.getWeather("Dubai");
+
+        WeatherResponse weatherResponse = weatherService.getWeather("Varanasi");
+        QuoteResponse.Response quoteResponse = quoteService.getQuote();
         String greetings= "";
         if(weatherResponse!=null){
             greetings=  ", weather feels like " + weatherResponse.getCurrent().getFeelslike();
+        }
+        if(quoteResponse!=null){
+            greetings += "\nQuote of the Day: " +  quoteResponse.getQuote();
+            greetings += "\nAuthor: " +  quoteResponse.getAuthor();
         }
 
         return new ResponseEntity<>("Hi "+ authentication.getName() + greetings,HttpStatus.OK);
